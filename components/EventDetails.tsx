@@ -1,4 +1,4 @@
-import { IEvent } from "@/database";
+import {IEvent} from "@/database/event.model";
 import { getSimilarEventBySlug } from "@/lib/actions/event.actions";
 import { Calendar, Clock, MapPin, UsersIcon } from "lucide-react"
 import { cacheLife } from "next/cache";

@@ -3,6 +3,7 @@ import EventCard from "@/components/EventCard";
 import { IEvent } from "@/database";
 import { getSimilarEventBySlug } from "@/lib/actions/event.actions";
 import { Calendar, Clock, MapPin, UsersIcon } from "lucide-react";
+import { cacheLife } from "next/cache";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
@@ -27,12 +28,16 @@ const EventTags = ({tags}: {tags: string[]}) =>(
   </div>
 )
 
-const EventDetailsPage = async({params}: {params: Promise<{slug: String}>}) => {
+const EventDetailsPage = async({params}: {params: Promise<{slug: string}>}) => {
+
+  'use cache'
+
+  cacheLife('hours');
 
   const {slug} = await params;
 
   const request = await fetch(`${BASE_URL}/api/events/${slug}`)
-  const {event : {description, title, overview, date, time, venue, location, audience, agenda, mode, organizer, tags, image}} = await request.json();
+  const {event : {description, title, overview, date, time, venue, location, audience, agenda, mode, organizer, tags, image, _id}} = await request.json();
 
   const similarEvents: IEvent[] = await getSimilarEventBySlug(slug);
   
@@ -101,7 +106,7 @@ const EventDetailsPage = async({params}: {params: Promise<{slug: String}>}) => {
               <p className="text-sm">Be the first to book your spot</p>
             )}
 
-            <BookEvent/>
+            <BookEvent eventId={_id} slug={slug}/>
           </div>
         </aside>
       </div>

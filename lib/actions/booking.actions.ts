@@ -1,7 +1,8 @@
 "use server"
 
-import { BookingModel } from "@/database";
-import connectDB from "../mongodb";
+import BookingModel from '@/database/booking.model';
+
+import connectDB from "@/lib/mongodb";
 
 export const createBookings = async({eventId, slug, email}: {eventId:string, slug:string, email: string}) =>{
     try {

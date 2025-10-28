@@ -1,28 +1,22 @@
 import EventCard from '@/components/EventCard'
 import ExploreBtn from '@/components/ExploreBtn'
-import { events } from '@/lib/constants'
-import { Events } from '@/types'
+import { IEvent } from '@/database';
+import { Event } from '@/types';
+import { cacheLife, cacheTag } from 'next/cache';
+// import { events } from '@/lib/constants'
 
-// const events:Events = [
-//    {
-//     slug: "react-conf-2024",
-//     image: "/images/event1.png",
-//     title: "React Conf 2024",
-//     location: "San Francisco, CA",
-//     date: "March 15, 2024",
-//     time: "9:00 AM - 6:00 PM",
-//   },
-//   {
-//     slug: "nextjs-summit",
-//     image: "/images/event2.png",
-//     title: "Next.js Summit",
-//     location: "Austin, TX",
-//     date: "April 22, 2024",
-//     time: "10:00 AM - 5:00 PM",
-//   },
-// ]
 
-const Page = () => {
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL
+
+const Page = async() => {
+
+  'use cache'
+
+  cacheLife('hours');
+  cacheTag('featured-events');
+  const response  = await fetch(`${BASE_URL}/api/events`);
+  const {events} = await response.json();
+
   return (
     <section>
       <h1 className='text-center'>The Hub for Every Dev <br/> Event You Can't Miss</h1>
@@ -34,7 +28,7 @@ const Page = () => {
         <h3>Feature Events</h3>
         
         <ul className="events">
-          {events.map((e, i) =>(
+          {events && events.length > 0 && events.map((e : IEvent, i: number) =>(
             <EventCard key={i} event={e} />
           ))}
         </ul>

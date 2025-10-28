@@ -3,12 +3,13 @@ import Link from "next/link"
 import { Button } from "./ui/button"
 import { Heart } from "lucide-react"
 import { Event } from "@/types"
+import { IEvent } from "@/database"
 
 
 
-const EventCard = ({event}: {event: Event}) => {
+const EventCard = ({event}: {event: IEvent}) => {
   return (
-    <Link href={`/events`} id="event-card">
+    <Link href={`/events/${event.slug}`} id="event-card">
         <div className="relative">
             <Image src={event.image} alt={event.title} width={410} height={300} className="poster"/>
 

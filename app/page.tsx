@@ -3,19 +3,19 @@ import ExploreBtn from '@/components/ExploreBtn'
 import { IEvent } from '@/database/event.model';
 import { Event } from '@/types';
 import { cacheLife, cacheTag } from 'next/cache';
-import { events } from '@/lib/constants'
+// import { events } from '@/lib/constants'
 
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL
 
 const Page = async() => {
 
-  // 'use cache'
+  'use cache'
 
-  // cacheLife('hours');
-  // cacheTag('featured-events');
-  // const response  = await fetch(`${BASE_URL}/api/events`);
-  // const {events} = await response.json();
+  cacheLife('hours');
+  cacheTag('featured-events');
+  const response  = await fetch(`${BASE_URL}/api/events`);
+  const {events} = await response.json();
 
   return (
     <section>
@@ -28,7 +28,7 @@ const Page = async() => {
         <h3>Feature Events</h3>
         
         <ul className="events">
-         {events && events.length > 0 && events.map((event) => (
+         {events && events.length > 0 && events.map((event:IEvent) => (
           <li key={event.title} className="list-none">
               <EventCard {...event} />
           </li>
